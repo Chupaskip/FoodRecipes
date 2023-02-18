@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.MainFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        android:backgroundTint="@null"
+            android:layout_marginHorizontal="@dimen/margin_between_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    >
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:collapsedTitleTextColor="@color/white"
+            app:elevation="0dp"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:expandedTitleTextColor="@color/white"
+            app:layout_scrollFlags="scroll|snap|enterAlways"       >
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search for meal"
+                android:textColorHint="#C7C7C7"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:hintTextColor="#C7C7c7"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:startIconDrawable="@drawable/ic_search">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_search"
+                    android:background="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+            <TextView
+                android:id="@+id/tv_random_meal"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Random meal"
+                android:layout_marginStart="@dimen/margin_between_display"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+            <ImageView
+                android:id="@+id/img_random_meal"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/rectangle_rounded"
+                android:clipToOutline="true"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:layout_marginHorizontal="@dimen/margin_between_display"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_random_meal"
+                tools:src="@tools:sample/backgrounds/scenic" />
+            <TextView
+                android:id="@+id/tv_random_meal_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="something"
+                app:layout_constraintBottom_toBottomOf="@id/img_random_meal"
+                android:layout_margin="16dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:textStyle="bold"
+                android:shadowRadius="3"
+                app:layout_constraintStart_toStartOf="@id/img_random_meal"/>
+
+            <TextView
+                android:id="@+id/tv_categories"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Categories"
+                android:layout_marginHorizontal="@dimen/margin_between_display"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_random_meal" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_elements"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_categories"
+                tools:itemCount="10"
+                tools:layout_editor_absoluteX="-184dp"
+                tools:listitem="@layout/item_category" />
+
+            <TextView
+                android:id="@+id/tv_popular_meals"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Popular meals"
+                android:layout_marginHorizontal="@dimen/margin_between_display"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_categories" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_popular_meals"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@id/tv_popular_meals"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:layout_marginTop="@dimen/margin_between_elements"
+                android:layout_marginHorizontal="@dimen/margin_between_display"
+                tools:listitem="@layout/item_meal"
+                android:scrollbarStyle="outsideOverlay"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
