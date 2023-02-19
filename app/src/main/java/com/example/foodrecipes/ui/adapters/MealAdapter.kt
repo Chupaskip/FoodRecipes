@@ -23,6 +23,8 @@ class MealAdapter : RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
     }
     val differ = AsyncListDiffer(this, diffUtil)
 
+    lateinit var itemClick:((Meal)->Unit)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder {
         return MealViewHolder(ItemMealBinding.inflate(LayoutInflater.from(parent.context),
             parent,
@@ -36,6 +38,9 @@ class MealAdapter : RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
                 .load(meal.strMealThumb)
                 .into(imgMeal)
             tvMealName.text = meal.strMeal
+        }
+        holder.itemView.setOnClickListener{
+            itemClick.invoke(meal)
         }
     }
 

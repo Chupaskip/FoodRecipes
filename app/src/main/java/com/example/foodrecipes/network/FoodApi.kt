@@ -18,4 +18,10 @@ interface FoodApi {
 
     @GET("categories.php")
     suspend fun getCategories(): Response<CategoriesResponse>
+
+    @GET("lookup.php")
+    suspend fun getMealDetails(
+        @Query("i")
+        idMeal: String,
+    ): Response<MealResponse>
 }

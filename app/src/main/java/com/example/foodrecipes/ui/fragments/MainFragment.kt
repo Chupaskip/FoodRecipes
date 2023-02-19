@@ -1,14 +1,10 @@
 package com.example.foodrecipes.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.foodrecipes.R
 import com.example.foodrecipes.databinding.FragmentMainBinding
 import com.example.foodrecipes.ui.adapters.CategoryAdapter
 import com.example.foodrecipes.ui.adapters.MealAdapter
@@ -29,6 +25,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         observeForPopularMeals()
         setUpRecyclerViewCategories()
         observeForCategories()
+
+        binding.imgRandomMeal.setOnClickListener {
+            val action =
+                MainFragmentDirections.actionMainFragmentToMealDetailFragment(viewModel.randomMeal.value!!.idMeal)
+            findNavController().navigate(action)
+        }
     }
 
     private fun observeForCategories() {
@@ -40,7 +42,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private fun setUpRecyclerViewCategories() {
         categoryAdapter = CategoryAdapter()
         binding.rvCategories.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = categoryAdapter
         }
     }
@@ -57,6 +60,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = mealAdapter
+        }
+        mealAdapter.itemClick = { meal ->
+            val action = MainFragmentDirections.actionMainFragmentToMealDetailFragment(meal.idMeal)
+            findNavController().navigate(action)
         }
     }
 

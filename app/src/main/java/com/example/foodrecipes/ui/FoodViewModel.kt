@@ -14,15 +14,19 @@ class FoodViewModel(
 ) : ViewModel() {
     private val _randomMeal = MutableLiveData<Meal>()
     val randomMeal: LiveData<Meal>
-        get() = _randomMeal!!
+        get() = _randomMeal
 
     private val _popularMeals = MutableLiveData<List<Meal>>()
     val popularMeals: LiveData<List<Meal>>
-        get() = _popularMeals!!
+        get() = _popularMeals
 
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>>
         get() = _categories
+
+    private val _mealDetails = MutableLiveData<Meal>()
+    val mealDetails: LiveData<Meal>
+        get() = _mealDetails
 
     init {
         getRandomMeal()
@@ -48,6 +52,13 @@ class FoodViewModel(
         viewModelScope.launch {
             val response = repository.getCategories()
             _categories.postValue(response.body()!!.categories)
+        }
+    }
+
+    fun getMealDetails(idMeal: String) {
+        viewModelScope.launch {
+            val response = repository.getMealDetails(idMeal)
+            _mealDetails.postValue(response.body()!!.meals[0] )
         }
     }
 }
