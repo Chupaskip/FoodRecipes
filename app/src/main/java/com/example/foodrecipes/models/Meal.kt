@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class Meal(
 //    val dateModified: Any,
-    val idMeal: String,
-    val strArea: String,
-    val strCategory: String,
+    val idMeal: String="",
+    val strArea: String="",
+    val strCategory: String="",
 //    val strCreativeCommonsConfirmed: Any,
 //    val strDrinkAlternate: Any,
 //    val strImageSource: Any,
@@ -31,9 +31,9 @@ data class Meal(
 //    val strIngredient7: String,
 //    val strIngredient8: String,
 //    val strIngredient9: String,
-    val strInstructions: String,
-    val strMeal: String,
-    val strMealThumb: String,
+    val strInstructions: String="",
+    val strMeal: String="",
+    val strMealThumb: String="",
 //    val strMeasure1: String,
 //    val strMeasure10: String,
 //    val strMeasure11: String,
@@ -54,7 +54,7 @@ data class Meal(
 //    val strMeasure7: String,
 //    val strMeasure8: String,
 //    val strMeasure9: String,
-    val strSource: Any,
-    val strTags: String,
-    val strYoutube: String
+//    val strSource: Any,
+    val strTags: String="",
+    val strYoutube: String=""
 )

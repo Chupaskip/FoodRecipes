@@ -13,6 +13,8 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
     inner class CategoryViewHolder(val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+    lateinit var onItemClick:((Category)->Unit)
+
     private val diffUtil = object : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
             return oldItem.idCategory == newItem.idCategory
@@ -24,6 +26,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
     }
 
     val differ = AsyncListDiffer(this, diffUtil)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(ItemCategoryBinding.inflate(LayoutInflater.from(parent.context),
@@ -38,6 +41,9 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
                 .load(category.strCategoryThumb)
                 .into(imgCategory)
             tvCategoryName.text = category.strCategory
+        }
+        holder.itemView.setOnClickListener{
+            onItemClick.invoke(category)
         }
     }
 

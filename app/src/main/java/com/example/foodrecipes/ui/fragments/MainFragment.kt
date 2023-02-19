@@ -21,16 +21,29 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         observeForRandomMeal()
+        randomMealClick()
         setUpRecyclerViewPopularMeals()
         observeForPopularMeals()
         setUpRecyclerViewCategories()
         observeForCategories()
+        setSearchClick()
+    }
 
+
+    private fun setSearchClick() {
+        binding.etSearch.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToSearchMealsFragment()
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun randomMealClick() {
         binding.imgRandomMeal.setOnClickListener {
             val action =
                 MainFragmentDirections.actionMainFragmentToMealDetailFragment(viewModel.randomMeal.value!!.idMeal)
             findNavController().navigate(action)
         }
+
     }
 
     private fun observeForCategories() {
@@ -45,6 +58,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = categoryAdapter
+        }
+        categoryAdapter.onItemClick = { category ->
+            val action =
+                MainFragmentDirections.actionMainFragmentToCategoryOrAreaFragment(category.strCategory)
+            findNavController().navigate(action)
         }
     }
 

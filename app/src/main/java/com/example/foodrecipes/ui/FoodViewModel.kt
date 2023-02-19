@@ -28,6 +28,14 @@ class FoodViewModel(
     val mealDetails: LiveData<Meal>
         get() = _mealDetails
 
+    private val _searchMeals = MutableLiveData<List<Meal>>()
+    val searchMeals: LiveData<List<Meal>>
+        get() = _searchMeals
+
+    private val _mealsByCategoryOrArea = MutableLiveData<List<Meal>>()
+    val mealsByCategoryOrArea: LiveData<List<Meal>>
+        get() = _mealsByCategoryOrArea
+
     init {
         getRandomMeal()
         getPopularMeals()
@@ -58,7 +66,28 @@ class FoodViewModel(
     fun getMealDetails(idMeal: String) {
         viewModelScope.launch {
             val response = repository.getMealDetails(idMeal)
-            _mealDetails.postValue(response.body()!!.meals[0] )
+            _mealDetails.postValue(response.body()!!.meals[0])
+        }
+    }
+
+    fun getSearchMeals(searchText: String) {
+        viewModelScope.launch {
+            val response = repository.getSearchMeals(searchText)
+            _searchMeals.postValue(response.body()!!.meals)
+        }
+    }
+
+    fun getMealsByCategory(category: String) {
+        viewModelScope.launch {
+            val response = repository.getMealsByCategory(category)
+            _mealsByCategoryOrArea.postValue(response.body()!!.meals)
+        }
+    }
+
+    fun getMealsByArea(area:String){
+        viewModelScope.launch {
+            val response = repository.getMealsByArea(area)
+            _mealsByCategoryOrArea.postValue(response.body()!!.meals)
         }
     }
 }

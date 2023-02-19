@@ -19,6 +19,22 @@ class MealDetailFragment : BaseFragment<FragmentMealDetailBinding>() {
 
         observeForMealDetails()
         setOnFabBackClick()
+        setOnCategoryAndAreaClick()
+    }
+
+    private fun setOnCategoryAndAreaClick() {
+        binding.cvCategoryName.setOnClickListener {
+            val action =
+                MealDetailFragmentDirections.actionMealDetailFragmentToCategoryOrAreaFragment(viewModel.mealDetails.value?.strCategory
+                    ?: "")
+            findNavController().navigate(action)
+        }
+        binding.cvLocation.setOnClickListener {
+            val action =
+                MealDetailFragmentDirections.actionMealDetailFragmentToCategoryOrAreaFragment("",
+                    viewModel.mealDetails.value?.strArea ?: "")
+            findNavController().navigate(action)
+        }
     }
 
     private fun setOnFabBackClick() {
@@ -36,6 +52,7 @@ class MealDetailFragment : BaseFragment<FragmentMealDetailBinding>() {
                 tvCategoryName.text = meal.strCategory
                 tvLocation.text = meal.strArea
                 tvInstructions.text = meal.strInstructions
+                binding.collapsingToolbar.title = meal.strMeal
             }
         }
     }

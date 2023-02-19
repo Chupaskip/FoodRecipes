@@ -24,4 +24,22 @@ interface FoodApi {
         @Query("i")
         idMeal: String,
     ): Response<MealResponse>
+
+    @GET("search.php")
+    suspend fun getSearchMeals(
+        @Query("s")
+        searchText:String
+    ):Response<MealResponse>
+
+    @GET("filter.php")
+    suspend fun getMealsByCategory(
+        @Query("c")
+        category:String="",
+    ):Response<MealResponse>
+
+    @GET("filter.php")
+    suspend fun getMealsByArea(
+        @Query("a")
+        area:String=""
+    ):Response<MealResponse>
 }

@@ -17,9 +17,9 @@
             android:id="@+id/img_category"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/rectangle_rounded"
+            android:background="@drawable/circle"
             android:clipToOutline="true"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 
         <TextView
