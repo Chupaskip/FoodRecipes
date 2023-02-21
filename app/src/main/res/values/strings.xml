@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">FoodRecipes</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_response">The %1$s didn\'t load: %2$s</string>
+    <string name="category_area">The %1$s from %2$s</string>
 </resources>

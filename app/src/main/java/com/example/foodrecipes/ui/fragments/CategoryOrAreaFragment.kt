@@ -5,8 +5,10 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodrecipes.R
 import com.example.foodrecipes.databinding.FragmentCategoryOrAreaBinding
 import com.example.foodrecipes.ui.adapters.MealAdapter
+import com.example.foodrecipes.util.Resource
 
 class CategoryOrAreaFragment : BaseFragment<FragmentCategoryOrAreaBinding>() {
     override val viewBinding: FragmentCategoryOrAreaBinding
@@ -25,19 +27,33 @@ class CategoryOrAreaFragment : BaseFragment<FragmentCategoryOrAreaBinding>() {
 
     private fun setAreaOrCategoryTitle() {
         if (args.category == "") {
-            binding.tvCategoryAreaName.text = "${args.area}"
+            binding.tvCategoryAreaName.text = args.area
         }
         if (args.area == "") {
-            binding.tvCategoryAreaName.text = "${args.category}"
+            binding.tvCategoryAreaName.text = args.category
         }
         if (args.category != "" && args.area != "") {
-            binding.tvCategoryAreaName.text = "${args.category} from ${args.area}"
+            binding.tvCategoryAreaName.text =
+                getString(R.string.category_area, args.category, args.area)
         }
     }
 
     private fun observeForMeals() {
-        viewModel.mealsByCategoryOrArea.observe(viewLifecycleOwner) { meals ->
-            mealAdapter.differ.submitList(meals)
+        viewModel.mealsByCategoryOrArea.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Error -> {
+                    throwErrorResponseWithToast("data",
+                        viewModel.mealsByCategoryOrArea.value?.message)
+                    swipeRefresher?.isRefreshing = false
+                }
+                is Resource.Loading -> {
+                    swipeRefresher?.isRefreshing = true
+                }
+                is Resource.Success -> {
+                    mealAdapter.differ.submitList(response.data?.meals)
+                    swipeRefresher?.isRefreshing = false
+                }
+            }
         }
     }
 
@@ -58,5 +74,12 @@ class CategoryOrAreaFragment : BaseFragment<FragmentCategoryOrAreaBinding>() {
                     meal.idMeal)
             findNavController().navigate(action)
         }
+    }
+
+    override fun setOnScrollRefresher() {
+        if (args.category != "")
+            viewModel.getMealsByCategory(args.category)
+        if (args.area != "")
+            viewModel.getMealsByArea(args.area)
     }
 }

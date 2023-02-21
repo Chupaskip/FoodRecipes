@@ -58,4 +58,8 @@
             android:id="@+id/action_categoryOrAreaFragment_to_mealDetailFragment"
             app:destination="@id/mealDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.foodrecipes.ui.fragments.FavoritesFragment"
+        android:label="FavoritesFragment" />
 </navigation>

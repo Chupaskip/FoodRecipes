@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.foodrecipes.R
 import com.example.foodrecipes.databinding.ItemMealBinding
 import com.example.foodrecipes.models.Meal
 
@@ -36,6 +37,7 @@ class MealAdapter : RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
         holder.binding.apply {
             Glide.with(this.root)
                 .load(meal.strMealThumb)
+                .error(R.drawable.img_error)
                 .into(imgMeal)
             tvMealName.text = meal.strMeal
         }

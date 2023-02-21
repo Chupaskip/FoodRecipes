@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.foodrecipes.R
 import com.example.foodrecipes.databinding.ItemCategoryBinding
 import com.example.foodrecipes.models.Category
 
@@ -39,6 +40,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
         holder.binding.apply {
             Glide.with(this.root)
                 .load(category.strCategoryThumb)
+                .error(R.drawable.img_error)
                 .into(imgCategory)
             tvCategoryName.text = category.strCategory
         }

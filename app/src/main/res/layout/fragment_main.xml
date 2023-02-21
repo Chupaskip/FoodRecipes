@@ -49,22 +49,26 @@
                     android:id="@+id/et_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:background="@null"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:focusable="false" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -82,35 +86,43 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <ImageView
-                    android:id="@+id/img_random_meal"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/img_card"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_between_display"
                     android:layout_marginTop="8dp"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/rectangle_rounded"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
+                    app:cardCornerRadius="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_random_meal"
-                    tools:src="@tools:sample/backgrounds/scenic" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_random_meal">
 
-                <TextView
-                    android:id="@+id/tv_random_meal_name"
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="0dp"
+                    <ImageView
+                        android:id="@+id/img_random_meal"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:src="@drawable/img_error"
+                        android:adjustViewBounds="true"
+                        android:clipToOutline="true"
+                        android:scaleType="centerCrop"
+                        tools:src="@tools:sample/backgrounds/scenic" />
 
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:shadowColor="@color/black"
-                    android:shadowRadius="3"
-                    android:text="something"
-                    app:layout_constraintEnd_toEndOf="@id/img_random_meal"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/img_random_meal"
-                    app:layout_constraintStart_toStartOf="@id/img_random_meal" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_meal_detail" />
+
+
+                    <TextView
+                        android:id="@+id/tv_random_meal_name"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="16dp"
+                        android:gravity="bottom|left"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
 
                 <TextView
                     android:id="@+id/tv_categories"
@@ -122,7 +134,7 @@
                     android:text="Categories"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/img_random_meal" />
+                    app:layout_constraintTop_toBottomOf="@id/img_card" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_categories"
@@ -156,11 +168,11 @@
                     android:id="@+id/rv_popular_meals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="6dp"
-                    android:paddingTop="8dp"
-
+                    android:layout_marginHorizontal="6dp"
                     android:clipToPadding="false"
+
                     android:nestedScrollingEnabled="false"
+                    android:paddingTop="8dp"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="none"
                     app:layout_constraintTop_toBottomOf="@id/tv_popular_meals"
@@ -168,7 +180,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
-
+        </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
