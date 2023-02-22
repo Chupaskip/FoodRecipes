@@ -1,18 +1,12 @@
 package com.example.foodrecipes.ui.fragments
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodrecipes.databinding.FragmentSearchMealsBinding
-import com.example.foodrecipes.ui.MainActivity
 import com.example.foodrecipes.ui.adapters.MealAdapter
 import com.example.foodrecipes.util.Resource
 import kotlinx.coroutines.Job
@@ -41,14 +35,11 @@ class SearchMealsFragment : BaseFragment<FragmentSearchMealsBinding>() {
                 is Resource.Error -> {
                     throwErrorResponseWithToast("search response",
                         viewModel.searchMeals.value?.message)
-                    swipeRefresher?.isRefreshing = false
                 }
                 is Resource.Loading -> {
-                    swipeRefresher?.isRefreshing = true
                 }
                 is Resource.Success -> {
                     mealAdapter.differ.submitList(response.data?.meals)
-                    swipeRefresher?.isRefreshing = false
                 }
             }
         }
@@ -62,9 +53,11 @@ class SearchMealsFragment : BaseFragment<FragmentSearchMealsBinding>() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
         mealAdapter.itemClick = { meal ->
-            val action =
-                SearchMealsFragmentDirections.actionSearchMealsFragmentToMealDetailFragment(meal.idMeal)
-            findNavController().navigate(action)
+            if (isInternetAvailable()) {
+                val action =
+                    SearchMealsFragmentDirections.actionSearchMealsFragmentToMealDetailFragment(meal.idMeal)
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -81,7 +74,4 @@ class SearchMealsFragment : BaseFragment<FragmentSearchMealsBinding>() {
         }
     }
 
-    override fun setOnScrollRefresher() {
-        viewModel.getSearchMeals(binding.etSearch.text.toString())
-    }
 }

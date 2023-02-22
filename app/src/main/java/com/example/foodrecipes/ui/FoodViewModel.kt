@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodrecipes.models.CategoriesResponse
+import com.example.foodrecipes.models.Meal
 import com.example.foodrecipes.models.MealResponse
 import com.example.foodrecipes.repository.FoodRepository
 import com.example.foodrecipes.util.Resource
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 class FoodViewModel(
     val repository: FoodRepository,
 ) : ViewModel() {
+
     private val _randomMeal = MutableLiveData<Resource<MealResponse>>()
     val randomMeal: LiveData<Resource<MealResponse>> = _randomMeal
 
@@ -30,7 +32,6 @@ class FoodViewModel(
 
     private val _mealsByCategoryOrArea = MutableLiveData<Resource<MealResponse>>()
     val mealsByCategoryOrArea: LiveData<Resource<MealResponse>> = _mealsByCategoryOrArea
-
 
 
     init {
@@ -91,4 +92,21 @@ class FoodViewModel(
             _mealsByCategoryOrArea.postValue(repository.getMealsByArea(area))
         }
     }
+
+    fun upsertMeal(meal: Meal){
+        viewModelScope.launch {
+            repository.upsertMeal(meal)
+        }
+    }
+
+    fun deleteMeal(meal:Meal){
+        viewModelScope.launch {
+            repository.deleteMeal(meal)
+        }
+    }
+
+
+
+    fun getFavoriteMeals() = repository.getFavoriteMeals()
+
 }

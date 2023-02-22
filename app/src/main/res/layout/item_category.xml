@@ -19,7 +19,7 @@
             android:layout_height="100dp"
             android:background="@drawable/circle"
             android:clipToOutline="true"
-            android:src="@drawable/img_error"
+            android:src="@drawable/img_placeholder"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 

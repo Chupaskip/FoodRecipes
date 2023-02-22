@@ -60,11 +60,16 @@
 
 
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresher"
+        android:layout_width="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_height="match_parent">
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+          >
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,7 +105,7 @@
                         android:id="@+id/img_random_meal"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
-                        android:src="@drawable/img_error"
+                        android:src="@drawable/img_placeholder"
                         android:adjustViewBounds="true"
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
@@ -181,5 +186,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

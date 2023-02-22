@@ -1,6 +1,9 @@
 package com.example.foodrecipes.ui.fragments
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.example.foodrecipes.R
 import com.example.foodrecipes.ui.FoodViewModel
+
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     private var _binding: VB? = null
     val binding
         get() = _binding!!
-
-    protected var swipeRefresher: SwipeRefreshLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,7 +27,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         _binding = viewBinding
-        swipeRefresher = activity?.findViewById<SwipeRefreshLayout>(R.id.swipe_refresher_main)
         return binding.root
     }
 
@@ -35,12 +35,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         _binding = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (swipeRefresher == null)
-            Toast.makeText(requireContext(), "Hello", Toast.LENGTH_SHORT).show()
-        swipeRefresher?.setOnRefreshListener { setOnScrollRefresher() }
-    }
 
     abstract val viewBinding: VB
 
@@ -55,6 +49,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             Toast.LENGTH_SHORT).show()
     }
 
-
-    open fun setOnScrollRefresher(){}
+    open fun isInternetAvailable() =
+        (requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
+            getNetworkCapabilities(activeNetwork)?.run {
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                        || hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        || hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            } ?: false
+        }
 }

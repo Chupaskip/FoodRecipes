@@ -40,7 +40,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
         holder.binding.apply {
             Glide.with(this.root)
                 .load(category.strCategoryThumb)
-                .error(R.drawable.img_error)
+                .placeholder(R.drawable.img_placeholder)
                 .into(imgCategory)
             tvCategoryName.text = category.strCategory
         }

@@ -14,7 +14,7 @@ class CategoryOrAreaFragment : BaseFragment<FragmentCategoryOrAreaBinding>() {
     override val viewBinding: FragmentCategoryOrAreaBinding
         get() = FragmentCategoryOrAreaBinding.inflate(layoutInflater)
 
-    val args: CategoryOrAreaFragmentArgs by navArgs()
+    private val args: CategoryOrAreaFragmentArgs by navArgs()
     private lateinit var mealAdapter: MealAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,14 +44,11 @@ class CategoryOrAreaFragment : BaseFragment<FragmentCategoryOrAreaBinding>() {
                 is Resource.Error -> {
                     throwErrorResponseWithToast("data",
                         viewModel.mealsByCategoryOrArea.value?.message)
-                    swipeRefresher?.isRefreshing = false
                 }
                 is Resource.Loading -> {
-                    swipeRefresher?.isRefreshing = true
                 }
                 is Resource.Success -> {
                     mealAdapter.differ.submitList(response.data?.meals)
-                    swipeRefresher?.isRefreshing = false
                 }
             }
         }
@@ -69,17 +66,13 @@ class CategoryOrAreaFragment : BaseFragment<FragmentCategoryOrAreaBinding>() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
         mealAdapter.itemClick = { meal ->
-            val action =
-                CategoryOrAreaFragmentDirections.actionCategoryOrAreaFragmentToMealDetailFragment(
-                    meal.idMeal)
-            findNavController().navigate(action)
+            if (isInternetAvailable()) {
+                val action =
+                    CategoryOrAreaFragmentDirections.actionCategoryOrAreaFragmentToMealDetailFragment(
+                        meal.idMeal)
+                findNavController().navigate(action)
+            }
         }
     }
 
-    override fun setOnScrollRefresher() {
-        if (args.category != "")
-            viewModel.getMealsByCategory(args.category)
-        if (args.area != "")
-            viewModel.getMealsByArea(args.area)
-    }
 }

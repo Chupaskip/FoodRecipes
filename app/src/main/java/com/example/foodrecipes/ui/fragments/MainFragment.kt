@@ -2,6 +2,7 @@ package com.example.foodrecipes.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         observeForCategories()
         setSearchClick()
 
+        binding.swipeRefresher.setOnRefreshListener {
+            viewModel.setMainFragment()
+        }
     }
 
     private fun setSearchClick() {
@@ -43,9 +47,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private fun randomMealClick(meal: Meal?) {
         binding.imgRandomMeal.setOnClickListener {
+            if (!isInternetAvailable())
+                return@setOnClickListener
             val action =
-                MainFragmentDirections.actionMainFragmentToMealDetailFragment(meal?.idMeal ?: "")
+                MainFragmentDirections.actionMainFragmentToMealDetailFragment(meal?.idMeal
+                    ?: "")
             findNavController().navigate(action)
+
         }
     }
 
@@ -56,16 +64,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     throwErrorResponseWithToast(
                         "categories",
                         viewModel.categories.value?.message)
-                    swipeRefresher?.isRefreshing = false
+                    binding.swipeRefresher.isRefreshing = false
                     binding.tvCategories.isVisible = false
+                    binding.rvCategories.isVisible = false
                 }
                 is Loading -> {
-                    swipeRefresher?.isRefreshing = true
+                    binding.swipeRefresher.isRefreshing = true
                 }
                 is Success -> {
                     categoryAdapter.differ.submitList(response.data?.categories)
-                    swipeRefresher?.isRefreshing = false
+                    binding.swipeRefresher.isRefreshing = false
                     binding.tvCategories.isVisible = true
+                    binding.rvCategories.isVisible = true
+
                 }
             }
         }
@@ -79,9 +90,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             adapter = categoryAdapter
         }
         categoryAdapter.onItemClick = { category ->
-            val action =
-                MainFragmentDirections.actionMainFragmentToCategoryOrAreaFragment(category.strCategory)
-            findNavController().navigate(action)
+            if (isInternetAvailable()) {
+                val action =
+                    MainFragmentDirections.actionMainFragmentToCategoryOrAreaFragment(category.strCategory)
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -92,15 +105,17 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     throwErrorResponseWithToast(
                         "popular meals",
                         viewModel.popularMeals.value?.message)
-                    swipeRefresher?.isRefreshing = false
+                    binding.swipeRefresher.isRefreshing = false
                     binding.tvPopularMeals.isVisible = false
+                    binding.rvPopularMeals.isVisible = false
                 }
                 is Loading -> {
-                    swipeRefresher?.isRefreshing = true
+                    binding.swipeRefresher.isRefreshing = true
                 }
                 is Success -> {
                     mealAdapter.differ.submitList(response.data?.meals)
-                    swipeRefresher?.isRefreshing = false
+                    binding.swipeRefresher.isRefreshing = false
+                    binding.rvPopularMeals.isVisible = true
                     binding.tvPopularMeals.isVisible = true
                 }
             }
@@ -115,8 +130,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             adapter = mealAdapter
         }
         mealAdapter.itemClick = { meal ->
-            val action = MainFragmentDirections.actionMainFragmentToMealDetailFragment(meal.idMeal)
-            findNavController().navigate(action)
+            if (isInternetAvailable()) {
+                val action =
+                    MainFragmentDirections.actionMainFragmentToMealDetailFragment(meal.idMeal)
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -127,24 +145,24 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     throwErrorResponseWithToast(
                         "random meal",
                         viewModel.randomMeal.value?.message)
-                    swipeRefresher?.isRefreshing = false
                     binding.apply {
                         imgCard.isVisible = false
+                        swipeRefresher.isRefreshing = false
                         tvRandomMeal.isVisible = false
                     }
                 }
                 is Loading -> {
-                    swipeRefresher?.isRefreshing = true
+                    binding.swipeRefresher.isRefreshing = true
                 }
                 is Success -> {
                     val meal = response.data?.meals?.get(0)
                     Glide.with(this@MainFragment)
                         .load(meal?.strMealThumb ?: "")
-                        .error(R.drawable.img_error)
+                        .placeholder(R.drawable.img_placeholder)
                         .into(binding.imgRandomMeal)
                     binding.tvRandomMealName.text = meal?.strMeal
                     randomMealClick(meal)
-                    swipeRefresher?.isRefreshing = false
+                    binding.swipeRefresher.isRefreshing = false
                     binding.apply {
                         imgCard.isVisible = true
                         tvRandomMeal.isVisible = true
@@ -154,7 +172,4 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         }
     }
 
-    override fun setOnScrollRefresher() {
-        viewModel.setMainFragment()
-    }
 }

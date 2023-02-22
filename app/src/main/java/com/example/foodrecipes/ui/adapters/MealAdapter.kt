@@ -37,7 +37,7 @@ class MealAdapter : RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
         holder.binding.apply {
             Glide.with(this.root)
                 .load(meal.strMealThumb)
-                .error(R.drawable.img_error)
+                .placeholder(R.drawable.img_placeholder)
                 .into(imgMeal)
             tvMealName.text = meal.strMeal
         }
